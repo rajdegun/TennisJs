@@ -1,98 +1,99 @@
+GetScores();
+
 function GetScores() {
 
     //get tennis scores for point between 0 - 3
     //get scroes for deuce, adv - 
 
-    let score1 = 3;
+    let score1 = 5;
     let score2 = 3;
     let player1 = "";
     let player2 = "";
 
-    if (score1 < 4 && score2 < 4) {
+    console.log(score1 + " " + score2);
 
-        switch (score1) {
-            case 0:
-                player1 = "Love";
-                break;
-            case 1:
-                player1 = "Fifteen";
-                break;
+    //Gets score below forty for players
+    if (score1 < 4 && score2 < 4  && score1!=score2) { 
+        player1 = GetPlayerScore(score1);
+        player2 = GetPlayerScore(score2);
 
-            case 2:
-                player1 = "Thirty";
-                break;
-
-            case 3:
-                player1 = "Forty";
-                break;
-
-            default:
-                player1 = "";
-                break;
-        }
-
-        if(score1<4 && score2<4){
-            switch (score2) {
-                case 0:
-                    player2 = "Love";
-                    break;
-                case 1:
-                    player2 = "Fifteen";
-                     break;
-                case 2:
-                    player2 = "Thirty";
-                    break;
-                case 3:
-                    player2 = "Forty";
-                    break;
-                default:
-                    player2 = "";
-                    break;
-            }
-        }
-        
+        return console.log(player1 + " " + player2);
     }
-    console.log( score1 + " " + score2);
 
-    if(score1===score2 && score1<3){
-        return console.log(player1 + " All");
+    //get all score combination
+    if(score1<3 && score1===score2 ){
+        player1 = GetPlayerScore(score1);
+
+        return console.log(player1 + " all");
     }
     else
-        {
-            if(score1<=3 && score2<=3 && score1!=score2){
-               console.log(player1 + " " + player2);
-             }
-             else{
-                //5 - 4 Ad - , 5-5 deuce, 6-5 Ad, 6-6 deuce, 6-7 Ad,
-                 
-                if(IsGame(score1,score2)>1){
+        {   
+                //handle Game, Deuce and Ad scoring
+                //5 - 4 Ad - , 5-5 deuce, 6-5 Ad, 6-6 deuce, 6-7 Ad,                
+                 //in a deuce game 
+                if(IsGame(score1,score2)) {
                     return console.log("Game");
                 }
 
-                let total =  score1 + score2;
-                let isDeuce = total % 2;
-                
-                console.log(score1 +  score2);
- 
- 
-                 if(isDeuce==0){
-                     return  console.log("deuce ");
- 
-                 }
-                 else{
-                   return  console.log("Ad - ");
-                 }
- 
+                if(IsDeuce(score1,score2)){
+                    return console.log("deuce");
+                }
+                else if (IsAd(score1,score2)){
+                    
+                    return console.log("Ad - ");
+                  }       
              }
         }
+    
 
-}
 
 function IsGame(score1, score2){
-    return (score1>score2)?score1-score2:score2-score1;
+    
+  let diff =  (score1>score2)?score1-score2:score2-score1;
+  if(diff===2){
+      return true;
+  }
+      
+  if((score1===4 && score2<3) || (score2===4 && score1<3)){
+      return true;
+  }
+
+  return false;
+
 }
 
-GetScores();
+function IsDeuce(score1,score2){
+    if(score1>2 && score2>2 && score1===score2){
+        return true;
+    }
+
+    return false;
+}
+
+function IsAd(score1,score2){
+    let diff =  (score1>score2)?score1-score2:score2-score1;
+    if(diff===1){
+      return true;
+  }
+
+  return false;
+}
+
+function GetPlayerScore(score){
+    switch (score) {
+        case 0:
+            return "Love";
+        case 1:
+            return "Fifteen";
+        case 2:
+          return  "Thirty";
+        case 3:
+            return "Forty";
+        default:
+            return "";
+}
+
+}
 
 
 
